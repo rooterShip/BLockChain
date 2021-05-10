@@ -21,7 +21,10 @@
 - asymmetric encryption algorithm--非对称加密体制
   公钥加密，私钥解密
 - 数字签名机制
-  进行BTC转账时，转账人用私钥对交易进行**签名**，交易信息发布在Block Chain上，其他人用公钥对消息进行**验证**----RSA,ESA,ECDSA(经典数字签名算法)
+  进行BTC转账时，转账人用私钥对交易进行**签名**，交易信息发布在Block Chain上，其他人用公钥对消息进行**验证**----RSA,ESA,ECDSA(经典数字签名算法)<br>
+## -BTC-数据结构
+- Hash pointers  
+  区别于普通指针---哈希指针可以存储哈希值
   
 
     

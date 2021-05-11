@@ -23,11 +23,32 @@
 - 数字签名机制
   进行BTC转账时，转账人用私钥对交易进行**签名**，交易信息发布在Block Chain上，其他人用公钥对消息进行**验证**----RSA,ESA,ECDSA(经典数字签名算法)<br>
 ## -BTC-数据结构
-- Hash pointers  
+- Hash pointersI(保证无环)   
   区别于普通指针---哈希指针可以存储哈希值(可以验证所指向的结构体有没有被篡改<br>
-- 区块链  
-  Block Chain is a linked list using hash pointers.
-  ![区块链模型](Image/BlockChain.png)
+### 区块链  
+- *Block Chain is a linked list using hash pointers.*  
+  ![区块链模型](Image/BlockChain.png")<br>
+  下一个区块的哈希值的产生必须是对本区块所有的内容取哈希(包括指向前一区块的哈希指针)
+- tamper-evident log---篡改证明记录
+    若对区块链中任一区块进行修改，则该区块以后的区块哈希值全部改变（包含最后一块），即记录下最后一块的哈希值，可以监测区块是否被篡改。<br>
+### Merkle tree
+![Merkletree模型](Image/MerkleTree.png)
+- 区块的组成
+  - block header(存储Merkle tree根哈希值，并无具体交易列表信息)
+  - block body(存储交易列表)<br>
+- BTC节点分类  
+  - 全节点(保存整个区块的信息)
+  - 轻节点(只保存block header)
+- Merkle Proof  
+  轻节点向Merkle tree寻求验证，交易是否被写进区块链中，即在Data Blocks中找到该交易信息，不断向根节点取哈希，验证root hash是否正确  
+  ![MerkleProof](Image/Merkle%20Proof.png)<br>
+  轻节点向全节点发起申请，全节点提供所需哈希(红色部分)，不断进行验证得出Merkle Root。
+- Proof of membership(证明Merkle Tree中包含某个交易信息)<br>
+  时间复杂度 O(log(n))
+  
+  
+   
+
 
   
 

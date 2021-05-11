@@ -27,7 +27,7 @@
   区别于普通指针---哈希指针可以存储哈希值(可以验证所指向的结构体有没有被篡改<br>
 ### 区块链  
 - *Block Chain is a linked list using hash pointers.*  
-  ![区块链模型](Image/BlockChain.png")<br>
+  ![区块链模型](Image/BlockChain.png)<br>
   下一个区块的哈希值的产生必须是对本区块所有的内容取哈希(包括指向前一区块的哈希指针)
 - tamper-evident log---篡改证明记录
     若对区块链中任一区块进行修改，则该区块以后的区块哈希值全部改变（包含最后一块），即记录下最后一块的哈希值，可以监测区块是否被篡改。<br>

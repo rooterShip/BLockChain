@@ -24,7 +24,11 @@
   进行BTC转账时，转账人用私钥对交易进行**签名**，交易信息发布在Block Chain上，其他人用公钥对消息进行**验证**----RSA,ESA,ECDSA(经典数字签名算法)<br>
 ## -BTC-数据结构
 - Hash pointers  
-  区别于普通指针---哈希指针可以存储哈希值
+  区别于普通指针---哈希指针可以存储哈希值(可以验证所指向的结构体有没有被篡改<br>
+- 区块链  
+  Block Chain is a linked list using hash pointers.
+  ![区块链模型](Image/BlockChain.png)
+
   
 
     

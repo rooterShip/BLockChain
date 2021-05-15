@@ -74,7 +74,7 @@
     比特币系统中的节点接受的应是最长合法链
   - froking attack(分叉攻击)
   - special situation<br>
-    ![最长合法链](Image/最长合法链.png)
+    ![最长合法链](Image/最长合法链.png)<br>
     当两个节点在几乎相同的时间发布出两个区块，则这种状况将会维持到最长合法链的诞生，即有一条链更早发布下一个区块，较短的那条链被舍弃(orphan block)。
   - block reward(出块奖励)  
     coinbase transaction(铸币交易)--币的来源

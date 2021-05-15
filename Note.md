@@ -45,22 +45,97 @@
   轻节点向全节点发起申请，全节点提供所需哈希(红色部分)，不断进行验证得出Merkle Root。
 - Proof of membership(证明Merkle Tree中包含某个交易信息)<br>
   时间复杂度 O(log(n))
-  ## -BTC-协议
-  - double spending attack--双重支付攻击<br>
+## -BTC-协议
+- double spending attack--双重支付攻击<br>
     类比实际生活中发行数字货币，防止双重攻击可以在央行系统(非去中心化中的管理员)登记币与币所有者(对应)。在比特币系统中，利用区块链数据结构，将由所有用户共同扮演管理员的身份。<br>
     ![交易协议](Image/交易协议.png)<br>
     比特币系统中每个交易都包含输入输出两部分，输入部分说明币的来源，输出部分说明收款人公钥的哈希。<br>
     此时区块链中有两种哈希指针<br>
     - 一种是连接各个区块之间的哈希指针(见上文)
     - 一种是指向前面某个交易的，是为了说明币的 来源。<br>
-  - 比特币系统不支持查询个体账户的公钥(地址)的 功能。<br>
+- 比特币系统不支持查询个体账户的公钥(地址)的 功能。<br>
   在发生交易时，举例A->B(5)，A要得到B的公钥(转账地址)的同时，B和全体用户也必须知道A的公钥(用A的公钥去验证消息，确认交易合法性)。A的公钥由A自己向全链进行广播。A在这里进行广播的公钥必须和币的来源(即接收币的时候所持有的公钥地址)相一致。(防止有恶意用户假装A进行转账)。
-  - 区块的组成
+- 区块的组成<br>
     上文提到每一个区块由两部分组成，即Block header,Block body
-    - Block header 内含信息：reversion(区块链版本信息)，hash of previous block header(哈希指针),Merkle root hash(Merkle tree的根哈希值),target(人为设计的目标阈值),nonce(见上文挖矿原理)。
+  - Block header 内含信息：reversion(区块链版本信息)，hash of previous block header(哈希指针),Merkle root hash(Merkle tree的根哈希值),target(人为设计的目标阈值),nonce(随机数)。
+  - Block body 内含信息：trasacation list(交易列表)
+- 节点的分类<br>
+  - full node(fully validating node)(保存区块链的所有信息)
+  - light node(只保存block header信息)
+- distributed consensus(分布式共识)
+  - CAP Theorm
+    - Consistency
+    - Availability
+    - Partition tolerance<br>
+ 表示在任意分布式系统中这三个性质中最多智能满足两个。
+- Consensus in BitCoin
+  - 所有节点在发布新区块前都会在本地预装出区块，把合法交易(节点主观上)放置进区块链中，直到成功找到nonce值的节点可以发布区块--获得记账权(包含预装的区块中交易信息)，然后所有节点验证区块信息(block header,block body)，如若无误，选择接受这个区块。
+  - longest valid chain<br>
+    比特币系统中的节点接受的应是最长合法链
+  - froking attack(分叉攻击)
+  - special situation<br>
+    ![最长合法链](Image/最长合法链.png)
+    当两个节点在几乎相同的时间发布出两个区块，则这种状况将会维持到最长合法链的诞生，即有一条链更早发布下一个区块，较短的那条链被舍弃(orphan block)。
+  - block reward(出块奖励)  
+    coinbase transaction(铸币交易)--币的来源
+## -BTC-实现
+### transaction-based ledger
+- UTXO (*unspent transaction output*)--未使用交易的输出<br>
+  比特币的交易由交易输入和交易输出组成，每一笔交易都要花费一笔输入，产生一笔输出，而其所产生的输出就是**未花费过的交易输出**即UTXO。
+  > *现实世界中没有比特币，只有UTXO*。<br>
+
+  注：<br>
+  - 比特币钱包中的账户余额，实际上是钱包通过扫描区块链并聚合所有属于该用户的UTXO计算得来的。<br>
+  - 除了 coinbase交易之外，所有的资金来源都必须来自前面某一个或者几个交易的 UTXO
+  - 任何一笔交易的交易输入总量必须等于交易输出总量，等式两边必须配平。(total inputs=total outputs+transaction fee)
+- transaction fee
+  当交易写进区块链中时，将会抽取transaction fee给发布区块的节点。
+- Example
+  - Block example(source:blockchain.info)<br>
+  ![BlockExample](Image/BlockExample.png)
+  其中：<br>
+    - Number of Transaction 区块中包含的交易信息
+    - Output Total 总输出比特币
+    - Transaction Fees 区块中所有的交易费
+    - Height 区块的序号
+    - Timestamp 时间戳
+    - Difficulty 挖矿难度(保证出块时间在十分钟左右)
+    - Nonce 随机值
+    - block reward 出块奖励
+    - Hash 该区块的块头哈希值
+    - Previous Block 前一个区块的块头哈希值
+    - Merkle Root Merkle tree的根哈希值 
+
+    ![BlockHeader](Image/Blockheader.png)
+
+    其中：<br>
+    - unit32_t nNonce 表示nonce是32位的整数<br>
+  注：32位nonce已经不能满足难度需求，需要再对block header中的某个域进行调整。
+
+    ![BlockHeader](Image/Blockheader1.png)
+
+    其中：<br>
+    - version 当前使用比特币版本号
+    - previous block header hash 前一个区块的哈希
+    - merkel root hash merkel tree的根哈希值
+    - time 这个区块产生的时间
+    - nBits 目标阈值编码后版本
+    - nonce 随机值<br>
+  观察block header中的各个域，想要对除nonce值以外的值进行修改，符合要求的只有merkle root hash.
+
+    ![Coinbase](Image/Coinbase.png)
+  Coinbase Transaction作为铸币交易，无输入，内含coinbase域，可以通过更改coinbase域写入的值来控制difficulty。
+  ![Transaction](Image/Coinbase1.png)
+  实际挖矿是两层循环遍历，第一层先找到extra nonce(coinbase域),第二层遍历找到nonce值才能发布新区块。<br>
+  - transaction example 
+  ![Transaction3](Image/Trasaction3.png)
+  框内表示这个交易的输入，图中output实际指花掉的是之前哪个交易的output。
+  ![Transaction1](Image/Trasaction1.png)
+  框内表示UTXO
+  ![Transaction2](Image/Trasaction2.png)
+  交易的输入和输出都是由脚本来完成的，验证交易的合法性就是将上一笔交易的输出和这笔交易的输入配对进行验证。
+
   
-  
-   
 
 
   

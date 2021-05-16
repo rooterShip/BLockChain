@@ -82,7 +82,7 @@
 ### transaction-based ledger
 - UTXO (*unspent transaction output*)--未使用交易的输出<br>
   比特币的交易由交易输入和交易输出组成，每一笔交易都要花费一笔输入，产生一笔输出，而其所产生的输出就是**未花费过的交易输出**即UTXO。
-  > *现实世界中没有比特币，只有UTXO*。<br>
+  > 现实世界中没有比特币，只有UTXO。<br>
 
   注：<br>
   - 比特币钱包中的账户余额，实际上是钱包通过扫描区块链并聚合所有属于该用户的UTXO计算得来的。<br>
@@ -134,9 +134,20 @@
   框内表示UTXO
   ![Transaction2](Image/Trasaction2.png)
   交易的输入和输出都是由脚本来完成的，验证交易的合法性就是将上一笔交易的输出和这笔交易的输入配对进行验证。
-
-  
-
+### 挖矿概率
+- Bernoulli trial: a random experiment with binary outcom
+  - 每一次尝试nonce为伯努利试验，且两种结果的概率相差较大。
+- Bernoulli process: a sequence of indepent Bernoulli trails
+  - 性质：无记忆性--memoryless
+- exponential distribution
+  - 出块时间满足指数分布(整个系统的出块时间，且满足平均出块时间维持在10分钟)
+  - 矿工的出块时间取决于矿工的算力在总算力中的占比
+- geometric series<br>
+  比特币系统中，每挖出21万个区块，出块奖励减半(初始出块奖励为50个比特币)，比特币系统中比特币总量为:<br>
+  $210000\times50+210000\times25+210000\times12.5+\ldots$<br>
+  $=210000\times50\times(1+\frac{1}{2}+\frac{1}{4}+\ldots)$<br>
+  $=21000000$<br>
+  即，比特币总量为2100万<br>
 
   
 

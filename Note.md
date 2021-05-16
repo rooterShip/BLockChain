@@ -148,6 +148,7 @@
   $=210000\times50\times(1+\frac{1}{2}+\frac{1}{4}+\ldots)$<br>
   $=21000000$<br>
   即，比特币总量为2100万<br>
+- Confirmation机制
 
   
 

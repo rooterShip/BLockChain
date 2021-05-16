@@ -148,7 +148,8 @@
   $=210000\times50\times(1+\frac{1}{2}+\frac{1}{4}+\ldots)$<br>
   $=21000000$<br>
   即，比特币总量为2100万<br>
-- Confirmation机制
+- Confirmation机制--等到该区块后的六区块发布出来后，该区块得到彻底确认。
+  
 
   
 

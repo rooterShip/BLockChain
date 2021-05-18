@@ -157,8 +157,8 @@
 - principle:<br>simple,robust,but no efficient
 ### -BTC-挖矿难度
 ## H(block header)<=target
-- $difficulty=\frac{target\ of\ diffulty\_1}{target}$<br>
-  - *difficulty_1_target*:挖矿难度为1(难度值最小)时候对应着的target
+- $difficulty=\frac{target\ of\ difficulty\_1}{target}$<br>
+  - *target of difficulty\_1*:挖矿难度为1(难度值最小)时候对应着的target
   - 如果不调整挖矿难度，出块时间会越来越短，系统中会出现越来越多的**分叉**，从而危害系统的共识性和安全(随着分叉条数越来越多，系统中总算力被分散，容易被恶意节点执行恶意操作)
 - 比特币系统中每隔2016个区块要调整一次挖矿难度。<br>
   $\frac{2016\times10(min)}{60\times24}$=14(day)

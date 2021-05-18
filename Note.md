@@ -149,6 +149,25 @@
   $=21000000$<br>
   即，比特币总量为2100万<br>
 - Confirmation机制--等到该区块后的六区块发布出来后，该区块得到彻底确认。
+## -BTC-网络
+- The BitCoin Network
+  application layer:BitCoin Block Chain<br>
+  ***
+  network layer:P2P Overlay Network
+- principle:<br>simple,robust,but no efficient
+### -BTC-挖矿难度
+## H(block header)<=target
+- $difficulty=\frac{diffulty\_1\_target}{target}$<br>
+  - *difficulty_1_target*:挖矿难度为1(难度值最小)时候对应着的target
+  - 如果不调整挖矿难度，出块时间会越来越短，系统中会出现越来越多的**分叉**，从而危害系统的共识性和安全(随着分叉条数越来越多，系统中总算力被分散，容易被恶意节点执行恶意操作)
+- 比特币系统中每隔2016个区块要调整一次挖矿难度。<br>
+  $\frac{2016\times10(min)}{60\times24}$=14(day)
+  - 10(min)：比特币系统中平均出块时间为10min
+  - 2016：每隔2016个区块要调整一次挖矿难度<br>
+  即每隔14天调整一次挖矿难度<br>
+  - $target=target\times\frac{actual time}{expected time}$
+    - actual time:time spent mining the last 2016 blocks
+    - expected time:$10\times2016$(平均出块时间乘区块个数)
   
 
   

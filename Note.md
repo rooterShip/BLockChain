@@ -210,8 +210,101 @@
     - 特点：具有较强的专业性，只能对特定的虚拟货币进行运算(mining puzzle)
 - 矿池
   - pool manager--矿主
-  - share(almost valid block)<br>当矿池中真正具有出块奖励时，share作为各个矿工的工作量证明。share：假设降低出块难度（即人为设置假区块），各个矿工挖到假区块并提交为一次share，share仅仅作为证明矿工的工作量。 
-  
+  - share(almost valid block)<br>当矿池中真正具有出块奖励时，share作为各个矿工的工作量证明。share：假设降低出块难度（即人为设置假区块），各个矿工挖到假区块并提交为一次share，share仅仅作为证明矿工的工作量。
+## 比特币脚本
+### 交易结构：<br>
+```json
+"result":{
+  "txid": "921a...dd24",//交易序列号
+  "hash": "921a...dd24",
+  "version": 1,//比特币协议的版本号
+  "size": 226,//交易大小
+  "locktime": 0,//locktime为执行时间，此处(0)为立即执行
+  "vin": [...],//输入
+  "vout": [...],//输出
+  "blockhash": "0000000000000000002c510d...5c0b",//这个交易所在的区块的哈希值
+  "confirmations": 23,//23个确认信息
+  "time": 1530846727,//交易产生时间
+  "blocktime": 1530846727//区块产生时间(从一个时间点到现在过了多长时间)
+}
+```
+### 输入部分
+```json
+"vin": [{
+  "txid": "c0cb...c57b",
+  "vout": 0,//前两行交代输入币的来源，txid表示上一个交易(产生币的交易)的序列号;vout表示上一个交易的第几个输出
+  "scriptSig":{           //输入脚本，这里的scriptSig之后将以input script指代
+    "asm": "3045...c57b",
+    "hex": "4830...0018"
+  },
+}],
+```
+### 输出部分
+```json
+"vout":[{
+  "value": 0.22684000,//转账金额(单位比特币)
+  "n": 0,//(输出序号)
+  "scriptPubKey": {//输出脚本，这里的scriptPubKey之后将以output script指代
+    "asm": "DUP HASH160 628e...d743 EQUALVERIFY CHECKSIG",//可以理解为脚本代码段
+    "hex": "76a9...88ac",
+    "reqSigs": 1,//需要的签名数
+    "type": "pubkeyhash",//输出脚本的格式
+    "addresses": ["19z8LJ...QvSr"]//收款人地址(公钥)
+  }
+},{
+  "value": 0.53756644,
+  "n": 1,
+  "scriptPubKey": {
+    "asm": "DUP HASH160 da7d...2cd2 EQUALVERIFY CHECKSIG",
+    "hex": "76a9...88ac",
+    "reqSigs": 1,
+    "type": "pubkeyhash",
+    "addresses": ["1LvGTp...NYhX"]
+  }
+}],
+```
+- Example<br>
+  ![比特币脚本](Image/比特币脚本.png)  
+  联系代码段，B->C的交易输入(币)来自A->B,即将B->C的输入脚本放在前面，A->B的脚本放在后面拼接而成(安全起见，这两段代码分别执行)，若最后结果返回True则交易可以执行。
+### 输入输出脚本的不同形式
+- P2PK(Pay to Public Key)<br>
+  ```
+  input script:
+  PUSHDATA(Sig)//输入为用私钥给出签名
+  output script:
+  PUSHDATA(PubKey)//为给出付款人的公钥
+  CHECKSIG//用付款人的公钥去验证签名
+  ```
+- P2PKH(Pay to Public Key Hash)
+  ```
+  input script:
+  PUSHDATA(Sig)//私钥签名
+  PUSHDATA(PubKey)//付款人公钥
+  output script:
+  DUP//复制栈顶元素
+  HASH160//弹出栈顶元素并取哈希值，并将哈希值压入栈
+  PUSHDATA(PubKeyHash)//将输出脚本提供的公钥哈希压入栈
+  EQUALVERIFY//弹出栈顶两个元素，比较两个元素是否相等
+  CHECKSIG//弹出栈顶两个元素判断是否为TRUE
+  ```
+## 多重签名
+- 最早的多重签名
+```
+input script:
+False//bug导致，加一条多余信息放栈底
+PUSHDATA(Sig_1)
+PUSHDATA(Sig_2)
+...
+PUSHDATA(Sig_M)
+outputScript:
+M             //M个签名
+PUSHDATA(pubket_1)
+PUSHDATA(pubkey_2)
+...
+PUSHDATA(pubkey_N)
+N             //N个公钥
+CHECKMULTISIG
+```
 
   
 

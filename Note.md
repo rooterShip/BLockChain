@@ -287,7 +287,7 @@
   EQUALVERIFY//弹出栈顶两个元素，比较两个元素是否相等
   CHECKSIG//弹出栈顶两个元素判断是否为TRUE
   ```
-## 多重签名
+### 多重签名
 - 最早的多重签名
 ```
 input script:
@@ -305,6 +305,22 @@ PUSHDATA(pubkey_N)
 N             //N个公钥
 CHECKMULTISIG
 ```
+## -BTC-分叉(fork)
+- state fork<br>
+由于对区块链意见不一产生的分叉<br>
+eg.forking attck(人为故意产生)--deliberate fork
+- protocd fork<br>
+由于比特币协议变化产生的变化<br>
+  - hard fork--永久性分叉(新协议产生的new features，未升级软件的旧节点不认可这些features)
+    eg:新协议中增大block size limit(1M->4M)
+    ![hard_fork](Image/hard_fork.png)
+    当系统中占绝大部分算力的节点更新协议后，算力集中在上面一条链(4M)，并不断延长，由于旧节点不承认新区块，即认为上面一条链不是合法链，所以下面一条链由未更新系统的节点继续延长，新节点承认两种区块(<=4M)，但由于新节点会选择最长合法链，因此，会永久形成上下两条链，形成硬分叉
+  - soft fork--非永久性分叉
+    eg:新协议中减小block size limit(1M->0.5M)[即新节点不承认旧节点，旧节点承认新节点]
+    ![soft_fork](Image/soft_fork.png)
+    当系统中占绝大部分算力的节点更新协议后，算力集中在上面一条链(0.5M)，由于旧节点承认新区块(<=1M)，所以会沿着上面一条链继续延长，因此下面一条链将被视为非法链，即分叉不会永远存在--软分叉
+  - 向前兼容的协议更新导致软分叉，向后兼容的协议更新导致硬分叉(前提都是系统占半数的算力更新协议)
+
 
   
 
